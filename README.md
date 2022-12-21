@@ -9,7 +9,7 @@
 ## 2 How to start application?
 
 1. Clone this repository
-2.        cd ${project_folder}
+2.      cd ${project_folder}
 3.     ./gradlew clean build
 4.      docker-compose up
 
@@ -23,7 +23,7 @@
 | GET    | /products/{id} | Get product by id param                      | 200    | Application/JSON | -                 |
 | POST   | /products      | Add new product                              | 201    | Application/JSON | -                 | 
 | PUT    | /products/{id} | Update product                               | 204    | Application/JSON | -                 | 
-| DELETE | /products/{id} | Delete products                              | 204    | -                | -                 |
+| DELETE | /products/{id} | Delete product                               | 204    | -                | -                 |
 
 ### 3.1.1 Add new product
 #### Request body:
@@ -56,7 +56,6 @@
 | GET    | /discountCards        | Get list of discount cards by page and size params | 200    | Application/JSON | page=0, size=5    |
 | GET    | /discountCards/{id}   | Get discount card by id param                      | 200    | Application/JSON | -                 |
 | POST   | /discountCards        | Add new discount card                              | 201    | Application/JSON | -                 |                
-| DELETE | /discountCards/{id}   | Delete discount card by id param                   | 204    | -                | -                 |
 
 ### 3.2.1 Add new discount card
 #### Request body:
