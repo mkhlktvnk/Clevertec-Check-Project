@@ -105,7 +105,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void checkCreateShouldThrowEntityNotFoundExceptionWhenProductNameIsNotUnique() {
+    void checkCreateShouldThrowEntityAlreadyExistsExceptionWhenProductNameIsNotUnique() {
         Product product = ProductTestBuilder
                 .aProduct()
                 .name("name")
