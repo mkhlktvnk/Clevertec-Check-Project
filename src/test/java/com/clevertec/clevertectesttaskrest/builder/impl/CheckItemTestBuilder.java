@@ -25,7 +25,7 @@ public class CheckItemTestBuilder implements TestDataBuilder<CheckItem> {
         return this;
     }
 
-    public CheckItemTestBuilder productModel(Product product) {
+    public CheckItemTestBuilder product(Product product) {
         this.product = product;
         return this;
     }
