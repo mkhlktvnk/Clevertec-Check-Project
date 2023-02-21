@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class ProductTestBuilder implements TestDataBuilder<Product> {
     private String name = "";
-    private BigDecimal price = BigDecimal.valueOf(0.01);
+    private BigDecimal price = BigDecimal.valueOf(0.00);
 
     private ProductTestBuilder() {}
 
