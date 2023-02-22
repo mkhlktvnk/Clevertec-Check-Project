@@ -8,6 +8,8 @@ import com.clevertec.clevertectesttaskrest.service.exception.EntityNotFoundExcep
 import com.clevertec.clevertectesttaskrest.service.exception.IncorrectRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,6 +30,9 @@ import static org.mockito.Mockito.when;
 class ProductServiceImplTest {
     @Mock
     private ProductRepository productRepository;
+
+    @Captor
+    private ArgumentCaptor<Product> productCaptor;
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -101,7 +106,7 @@ class ProductServiceImplTest {
 
         assertEquals(actual, product);
         verify(productRepository).existsByName(product.getName());
-        verify(productRepository).save(product);
+        verify(productRepository).save(productCaptor.capture());
     }
 
     @Test
@@ -137,7 +142,7 @@ class ProductServiceImplTest {
         productService.update(ID, product);
 
         verify(productRepository).existsById(ID);
-        verify(productRepository).save(any(Product.class));
+        verify(productRepository).save(productCaptor.capture());
     }
 
     @Test
