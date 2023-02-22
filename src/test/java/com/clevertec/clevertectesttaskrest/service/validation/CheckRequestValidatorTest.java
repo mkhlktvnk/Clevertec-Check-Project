@@ -8,13 +8,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.clevertec.clevertectesttaskrest.builder.impl.CheckRequestTestBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CheckRequestValidatorTest {
 
     @Test
     void checkValidateCheckRequestShouldThrowIncorrectRequestExceptionWhenNotUniqueItemIsPresent() {
-        CheckRequest checkRequest = CheckRequestTestBuilder.aCheckRequest()
+        CheckRequest checkRequest = aCheckRequest()
                 .discountCardId(3L)
                 .positions(List.of(
                         new CheckRequestPosition(1L, 2),
@@ -28,7 +29,7 @@ class CheckRequestValidatorTest {
 
     @Test
     void checkValidateCheckRequestShouldThrowIncorrectRequestExceptionWhenPositionWithZeroQuantityIsPresent() {
-        CheckRequest checkRequest = CheckRequestTestBuilder.aCheckRequest()
+        CheckRequest checkRequest = aCheckRequest()
                 .discountCardId(3L)
                 .positions(List.of(
                         new CheckRequestPosition(1L, 2),

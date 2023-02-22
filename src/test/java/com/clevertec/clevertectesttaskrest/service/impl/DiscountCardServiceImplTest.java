@@ -19,6 +19,7 @@ import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+import static com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +38,7 @@ class DiscountCardServiceImplTest {
 
     @Test
     void checkGetByIdShouldReturnActualDiscountCardAndCallRepository() {
-        DiscountCard discountCard = DiscountCardTestBuilder.aDiscountCard()
+        DiscountCard discountCard = aDiscountCard()
                 .discount(20)
                 .build();
         when(discountCardRepository.findById(ID)).thenReturn(Optional.of(discountCard));
@@ -59,11 +60,11 @@ class DiscountCardServiceImplTest {
     void checkGetByPagingShouldReturnActualDiscountCardsAndCallRepository() {
         PageRequest pageRequest = PageRequest.of(0, 4);
         List<DiscountCard> discountCards = List.of(
-                DiscountCardTestBuilder.aDiscountCard().discount(1).build(),
-                DiscountCardTestBuilder.aDiscountCard().discount(2).build(),
-                DiscountCardTestBuilder.aDiscountCard().discount(3).build(),
-                DiscountCardTestBuilder.aDiscountCard().discount(4).build(),
-                DiscountCardTestBuilder.aDiscountCard().discount(5).build()
+                aDiscountCard().discount(1).build(),
+                aDiscountCard().discount(2).build(),
+                aDiscountCard().discount(3).build(),
+                aDiscountCard().discount(4).build(),
+                aDiscountCard().discount(5).build()
         );
         when(discountCardRepository.findAll(pageRequest)).thenReturn(discountCards);
 
@@ -75,7 +76,7 @@ class DiscountCardServiceImplTest {
 
     @Test
     void checkCreateShouldReturnCreatedDiscountCardAndCallRepository() {
-        DiscountCard discountCard = DiscountCardTestBuilder.aDiscountCard()
+        DiscountCard discountCard = aDiscountCard()
                 .discount(20)
                 .build();
         when(discountCardRepository.save(discountCard)).thenReturn(discountCard);
@@ -88,7 +89,7 @@ class DiscountCardServiceImplTest {
 
     @Test
     void checkCreateShouldThrowIncorrectRequestExceptionWhenDiscountCardIsInvalid() {
-        DiscountCard discountCard = DiscountCardTestBuilder.aDiscountCard()
+        DiscountCard discountCard = aDiscountCard()
                 .discount(-100)
                 .build();
 

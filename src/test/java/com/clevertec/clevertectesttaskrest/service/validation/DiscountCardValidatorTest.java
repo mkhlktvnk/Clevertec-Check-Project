@@ -6,6 +6,7 @@ import com.clevertec.clevertectesttaskrest.service.exception.IncorrectRequestExc
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder.aDiscountCard;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DiscountCardValidatorTest {
@@ -13,7 +14,7 @@ class DiscountCardValidatorTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 101, 110, 220, 2342, 532})
     void checkValidateDiscountCardShouldThrowIncorrectRequestExceptionWhenPriceIsInvalid(int discount) {
-        DiscountCard discountCard = DiscountCardTestBuilder.aDiscountCard()
+        DiscountCard discountCard = aDiscountCard()
                 .discount(discount)
                 .build();
 

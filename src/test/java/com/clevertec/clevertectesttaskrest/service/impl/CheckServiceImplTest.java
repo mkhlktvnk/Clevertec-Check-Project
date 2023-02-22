@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static com.clevertec.clevertectesttaskrest.builder.impl.CheckRequestTestBuilder.*;
 import static com.clevertec.clevertectesttaskrest.builder.impl.CheckTestBuilder.aCheck;
 import static com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder.aDiscountCard;
 import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.aProduct;
@@ -95,7 +96,7 @@ class CheckServiceImplTest {
 
     @Test
     void createCheckShouldCallServices() {
-        CheckRequest checkRequest = CheckRequestTestBuilder.aCheckRequest()
+        CheckRequest checkRequest = aCheckRequest()
                 .discountCardId(1L)
                 .positions(List.of(
                         new CheckRequestPosition(1L, 1),

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -42,7 +43,7 @@ class CheckItemServiceImplTest {
 
     @Test
     void generateCheckItemsShouldReturnItemWithSizeEqualToProductsSize() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .id(1L)
                 .price(BigDecimal.TEN)
                 .build();

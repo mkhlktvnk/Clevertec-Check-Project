@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +42,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkGetByIdShouldReturnActualProduct() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .name("name")
                 .price(BigDecimal.valueOf(99.99))
                 .build();
@@ -54,7 +55,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkGetByIdShouldCallRepositoryOnce() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .name("name")
                 .price(BigDecimal.valueOf(99.99))
                 .build();
@@ -75,11 +76,11 @@ class ProductServiceImplTest {
     @Test
     void checkGetByPagingShouldReturnActualProductsAndCallRepository() {
         List<Product> products = List.of(
-                ProductTestBuilder.aProduct()
+                aProduct()
                         .name("name1")
                         .price(BigDecimal.valueOf(99.92))
                         .build(),
-                ProductTestBuilder.aProduct()
+                aProduct()
                         .name("name2")
                         .price(BigDecimal.valueOf(99.93))
                         .build()
@@ -94,8 +95,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkCreateShouldReturnCreatedProductAndCallRepository() {
-        Product product = ProductTestBuilder
-                .aProduct()
+        Product product = aProduct()
                 .name("name")
                 .price(BigDecimal.valueOf(89.32))
                 .build();
@@ -111,8 +111,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkCreateShouldThrowEntityAlreadyExistsExceptionWhenProductNameIsNotUnique() {
-        Product product = ProductTestBuilder
-                .aProduct()
+        Product product = aProduct()
                 .name("name")
                 .price(BigDecimal.valueOf(89.32))
                 .build();
@@ -123,7 +122,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkCreateShouldIncorrectRequestExceptionWhenProductIsNotValid() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .name("")
                 .price(BigDecimal.valueOf(99.999))
                 .build();
@@ -133,7 +132,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkUpdateShouldCallRepositoryAndProductGetters() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .name("name")
                 .price(BigDecimal.valueOf(92.12))
                 .build();
@@ -147,7 +146,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkUpdateShouldThrowEntityNotFoundExceptionWhenProductIsNotPresent() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .name("name")
                 .price(BigDecimal.valueOf(92.12))
                 .build();
@@ -158,7 +157,7 @@ class ProductServiceImplTest {
 
     @Test
     void checkUpdateShouldThrowIncorrectRequestExceptionWhenProductIsInvalid() {
-        Product product = ProductTestBuilder.aProduct()
+        Product product = aProduct()
                 .name("")
                 .price(BigDecimal.valueOf(99.99))
                 .build();
@@ -188,11 +187,11 @@ class ProductServiceImplTest {
     void checkGetProductsByIdInShouldCallRepository() {
         List<Long> ids = List.of(1L, 2L, 3L, 4L, 5L);
         List<Product> products = List.of(
-                ProductTestBuilder.aProduct().name("name1").price(BigDecimal.valueOf(0.01)).build(),
-                ProductTestBuilder.aProduct().name("name2").price(BigDecimal.valueOf(0.02)).build(),
-                ProductTestBuilder.aProduct().name("name3").price(BigDecimal.valueOf(0.03)).build(),
-                ProductTestBuilder.aProduct().name("name4").price(BigDecimal.valueOf(0.04)).build(),
-                ProductTestBuilder.aProduct().name("name1").price(BigDecimal.valueOf(0.05)).build()
+                aProduct().name("name1").price(BigDecimal.valueOf(0.01)).build(),
+                aProduct().name("name2").price(BigDecimal.valueOf(0.02)).build(),
+                aProduct().name("name3").price(BigDecimal.valueOf(0.03)).build(),
+                aProduct().name("name4").price(BigDecimal.valueOf(0.04)).build(),
+                aProduct().name("name1").price(BigDecimal.valueOf(0.05)).build()
         );
         when(productRepository.findByIdIn(ids)).thenReturn(products);
 
