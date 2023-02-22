@@ -9,6 +9,7 @@ import com.clevertec.clevertectesttaskrest.service.exception.IncorrectRequestExc
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +26,9 @@ import static org.mockito.Mockito.*;
 class DiscountCardServiceImplTest {
     @Mock
     private DiscountCardRepository discountCardRepository;
+
+    @Captor
+    private ArgumentCaptor<DiscountCard> discountCardCaptor;
 
     @InjectMocks
     private DiscountCardServiceImpl discountCardService;
@@ -79,7 +83,7 @@ class DiscountCardServiceImplTest {
         DiscountCard actual = discountCardService.create(discountCard);
 
         assertEquals(actual, discountCard);
-        verify(discountCardRepository).save(discountCard);
+        verify(discountCardRepository).save(discountCardCaptor.capture());
     }
 
     @Test
