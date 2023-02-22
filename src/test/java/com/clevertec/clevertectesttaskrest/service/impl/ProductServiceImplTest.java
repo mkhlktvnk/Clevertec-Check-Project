@@ -146,6 +146,17 @@ class ProductServiceImplTest {
     }
 
     @Test
+    void checkUpdateShouldThrowEntityNotFoundExceptionWhenProductIsNotPresent() {
+        Product product = ProductTestBuilder.aProduct()
+                .name("name")
+                .price(BigDecimal.valueOf(92.12))
+                .build();
+        when(productRepository.existsById(ID)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, () -> productService.update(ID, product));
+    }
+
+    @Test
     void checkUpdateShouldThrowIncorrectRequestExceptionWhenProductIsInvalid() {
         Product product = ProductTestBuilder.aProduct()
                 .name("")
