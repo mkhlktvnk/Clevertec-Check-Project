@@ -30,15 +30,6 @@ class CheckServiceImplTest {
     @Mock
     private CheckRepository checkRepository;
 
-    @Mock
-    private ProductService productService;
-
-    @Mock
-    private DiscountCardService discountCardService;
-
-    @Mock
-    private CheckItemService checkItemService;
-
     @InjectMocks
     private CheckServiceImpl checkService;
 
