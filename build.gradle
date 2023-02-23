@@ -40,6 +40,7 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor "org.projectlombok:lombok"
     implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 
