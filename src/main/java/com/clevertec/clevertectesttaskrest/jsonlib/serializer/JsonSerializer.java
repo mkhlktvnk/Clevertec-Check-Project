@@ -90,7 +90,7 @@ public class JsonSerializer {
     }
 
     private StringBuilder serializeMapToJson(Object object) throws IllegalAccessException {
-        JsonDataJoiner jsonDataJoiner = new JsonDataJoiner(JoiningSigns.OBJECTS_SEQUENCE);
+        JsonDataJoiner jsonDataJoiner = new JsonDataJoiner(JoiningSigns.SINGLE_OBJECT);
         AtomicInteger currentIndex = new AtomicInteger(0);
         Map<?, ?> map = (Map<?, ?>) object;
         for (var entry : map.entrySet()) {
