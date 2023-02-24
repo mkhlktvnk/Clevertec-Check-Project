@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 @Table(name = "contact")
 public class Contact extends AbstractEntity {
     @Column(nullable = false)
-    private String firstName;
+    private String firstname;
 
     @Column(nullable = false)
     private String lastname;

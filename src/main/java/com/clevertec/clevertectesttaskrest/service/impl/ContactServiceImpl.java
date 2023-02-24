@@ -27,7 +27,7 @@ public class ContactServiceImpl implements ContactService {
     public void update(Long id, Contact contact) {
         Contact contactToUpdate = Contact.builder()
                 .id(id)
-                .firstName(contact.getFirstName())
+                .firstname(contact.getFirstname())
                 .lastname(contact.getLastname())
                 .email(contact.getEmail())
                 .age(contact.getAge())
