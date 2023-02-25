@@ -25,6 +25,9 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void update(Long id, Contact contact) {
+        if (!contactRepository.existsById(id)) {
+            throw new EntityNotFoundException("Contact not found");
+        }
         Contact contactToUpdate = Contact.builder()
                 .id(id)
                 .firstname(contact.getFirstname())
