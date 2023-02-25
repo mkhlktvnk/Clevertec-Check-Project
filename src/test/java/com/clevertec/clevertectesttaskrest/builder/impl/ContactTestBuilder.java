@@ -1,5 +1,6 @@
 package com.clevertec.clevertectesttaskrest.builder.impl;
 
+import com.clevertec.clevertectesttaskrest.builder.TestDataBuilder;
 import com.clevertec.clevertectesttaskrest.domain.Contact;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.With;
 @NoArgsConstructor(staticName = "aContact")
 @AllArgsConstructor
 @With
-public class ContactTestBuilder {
+public class ContactTestBuilder implements TestDataBuilder<Contact> {
     private Long id;
 
     private String firstname;
