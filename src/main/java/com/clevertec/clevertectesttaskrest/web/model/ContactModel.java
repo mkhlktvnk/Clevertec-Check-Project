@@ -1,6 +1,8 @@
 package com.clevertec.clevertectesttaskrest.web.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
@@ -9,20 +11,21 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@JacksonXmlRootElement
 public class ContactModel {
-    @JsonProperty("id")
+    @JacksonXmlProperty
     private Long id;
 
-    @JsonProperty("firstname")
+    @JacksonXmlProperty
     private String firstname;
 
-    @JsonProperty("lastname")
+    @JacksonXmlProperty
     private String lastname;
 
-    @JsonProperty("email")
+    @JacksonXmlProperty
     @Pattern(regexp = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")
     private String email;
 
-    @JsonProperty("age")
+    @JacksonXmlProperty
     private Integer age;
 }

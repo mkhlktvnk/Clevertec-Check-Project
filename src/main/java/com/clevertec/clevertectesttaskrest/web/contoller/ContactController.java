@@ -5,6 +5,7 @@ import com.clevertec.clevertectesttaskrest.web.model.ContactModel;
 import com.clevertec.clevertectesttaskrest.web.model.converter.ContactMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +14,7 @@ public class ContactController {
     private final ContactService contactService;
     private final ContactMapper mapper = ContactMapper.INSTANCE;
 
-    @GetMapping("/contacts/{id}")
+    @GetMapping(value = "/contacts/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ContactModel getContact(@PathVariable Long id) {
         return mapper.toModel(contactService.getById(id));
     }
