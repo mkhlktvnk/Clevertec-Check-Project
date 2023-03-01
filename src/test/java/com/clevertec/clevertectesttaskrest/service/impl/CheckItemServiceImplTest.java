@@ -1,11 +1,8 @@
 package com.clevertec.clevertectesttaskrest.service.impl;
 
 import com.clevertec.clevertectesttaskrest.builder.impl.CheckTestBuilder;
-import com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder;
-import com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder;
 import com.clevertec.clevertectesttaskrest.domain.Check;
 import com.clevertec.clevertectesttaskrest.domain.CheckItem;
-import com.clevertec.clevertectesttaskrest.domain.DiscountCard;
 import com.clevertec.clevertectesttaskrest.domain.Product;
 import com.clevertec.clevertectesttaskrest.repository.CheckItemRepository;
 import org.junit.jupiter.api.Test;
@@ -20,9 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.aProduct;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CheckItemServiceImplTest {
@@ -35,24 +33,23 @@ class CheckItemServiceImplTest {
     @Test
     void saveAllItemsShouldCallRepository() {
         List<CheckItem> checkItems = Collections.singletonList(CheckItem.builder().build());
+        doReturn(checkItems).when(checkItemRepository).saveAll(checkItems);
 
-        checkItemService.saveAllItems(checkItems);
+        List<CheckItem> actual = (List<CheckItem>) checkItemService.saveAllItems(checkItems);
 
         verify(checkItemRepository).saveAll(checkItems);
+        assertThat(actual).isEqualTo(checkItems);
     }
 
     @Test
     void generateCheckItemsShouldReturnItemWithSizeEqualToProductsSize() {
-        Product product = aProduct()
-                .id(1L)
-                .price(BigDecimal.TEN)
-                .build();
+        Product product = aProduct().id(1L).price(BigDecimal.TEN).build();
         List<Product> products = Collections.singletonList(product);
         Map<Long, Integer> map = Collections.singletonMap(1L, 1);
         Check check = CheckTestBuilder.aCheck().build();
 
         Set<CheckItem> actual = checkItemService.generateCheckItems(products, map, check);
 
-        assertEquals(actual.size(), products.size());
+        assertThat(actual.size()).isEqualTo(products.size());
     }
 }
