@@ -1,8 +1,6 @@
 package com.clevertec.clevertectesttaskrest.service.impl;
 
-import com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder;
 import com.clevertec.clevertectesttaskrest.domain.DiscountCard;
-import com.clevertec.clevertectesttaskrest.domain.Product;
 import com.clevertec.clevertectesttaskrest.repository.DiscountCardRepository;
 import com.clevertec.clevertectesttaskrest.service.exception.EntityNotFoundException;
 import com.clevertec.clevertectesttaskrest.service.exception.IncorrectRequestException;
@@ -15,12 +13,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.clevertec.clevertectesttaskrest.builder.impl.DiscountCardTestBuilder.aDiscountCard;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,19 +41,19 @@ class DiscountCardServiceImplTest {
         DiscountCard discountCard = aDiscountCard()
                 .discount(20)
                 .build();
-        when(discountCardRepository.findById(ID)).thenReturn(Optional.of(discountCard));
+        doReturn(Optional.of(discountCard)).when(discountCardRepository).findById(ID);
 
         DiscountCard actual = discountCardService.getById(ID);
 
-        assertEquals(actual, discountCard);
+        assertThat(actual).isEqualTo(discountCard);
         verify(discountCardRepository).findById(ID);
     }
 
     @Test
     void checkGetByIdShouldThrowEntityNotFoundExceptionWhenProductIsNotPresent() {
-        when(discountCardRepository.findById(ID)).thenReturn(Optional.empty());
+        doReturn(Optional.empty()).when(discountCardRepository).findById(ID);
 
-        assertThrows(EntityNotFoundException.class, () -> discountCardService.getById(ID));
+        assertThatThrownBy(() -> discountCardService.getById(ID)).isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -66,39 +66,36 @@ class DiscountCardServiceImplTest {
                 aDiscountCard().discount(4).build(),
                 aDiscountCard().discount(5).build()
         );
-        when(discountCardRepository.findAll(pageRequest)).thenReturn(discountCards);
+        doReturn(discountCards).when(discountCardRepository).findAll(pageRequest);
 
         List<DiscountCard> actual = discountCardService.getByPaging(pageRequest);
 
-        assertEquals(discountCards, actual);
         verify(discountCardRepository).findAll(pageRequest);
+        assertThat(actual).isEqualTo(discountCards);
     }
 
     @Test
     void checkCreateShouldReturnCreatedDiscountCardAndCallRepository() {
-        DiscountCard discountCard = aDiscountCard()
-                .discount(20)
-                .build();
-        when(discountCardRepository.save(discountCard)).thenReturn(discountCard);
+        DiscountCard discountCard = aDiscountCard().discount(20).build();
+        doReturn(discountCard).when(discountCardRepository).save(discountCard);
 
         DiscountCard actual = discountCardService.create(discountCard);
 
-        assertEquals(actual, discountCard);
         verify(discountCardRepository).save(discountCardCaptor.capture());
+        assertThat(actual).isEqualTo(discountCard);
     }
 
     @Test
     void checkCreateShouldThrowIncorrectRequestExceptionWhenDiscountCardIsInvalid() {
-        DiscountCard discountCard = aDiscountCard()
-                .discount(-100)
-                .build();
+        DiscountCard discountCard = aDiscountCard().discount(-100).build();
 
-        assertThrows(IncorrectRequestException.class, () -> discountCardService.create(discountCard));
+        assertThatThrownBy(() -> discountCardService.create(discountCard))
+                .isInstanceOf(IncorrectRequestException.class);
     }
 
     @Test
     void checkDeleteByIdShouldCallRepository() {
-        when(discountCardRepository.existsById(ID)).thenReturn(true);
+        doReturn(true).when(discountCardRepository).existsById(ID);
 
         discountCardService.deleteById(ID);
 
@@ -108,7 +105,7 @@ class DiscountCardServiceImplTest {
 
     @Test
     void checkDeleteByIdShouldThrowEntityNotFoundExceptionWhenDiscountCardIsNotPresent() {
-        when(discountCardRepository.existsById(ID)).thenReturn(false);
+        doReturn(false).when(discountCardRepository).existsById(ID);
 
         assertThrows(EntityNotFoundException.class, () -> discountCardService.deleteById(ID));
     }
