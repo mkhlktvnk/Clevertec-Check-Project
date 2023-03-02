@@ -1,6 +1,5 @@
 package com.clevertec.clevertectesttaskrest.service.impl;
 
-import com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder;
 import com.clevertec.clevertectesttaskrest.domain.Product;
 import com.clevertec.clevertectesttaskrest.repository.ProductRepository;
 import com.clevertec.clevertectesttaskrest.service.exception.EntityAlreadyExistsException;
@@ -20,15 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.clevertec.clevertectesttaskrest.builder.impl.ProductTestBuilder.aProduct;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
+
     @Mock
     private ProductRepository productRepository;
 
@@ -42,23 +41,17 @@ class ProductServiceImplTest {
 
     @Test
     void checkGetByIdShouldReturnActualProduct() {
-        Product product = aProduct()
-                .name("name")
-                .price(BigDecimal.valueOf(99.99))
-                .build();
-        when(productRepository.findById(ID)).thenReturn(Optional.of(product));
+        Product product = aProduct().name("name").price(BigDecimal.valueOf(99.99)).build();
+        doReturn(Optional.of(product)).when(productRepository).findById(ID);
 
         Product actual = productService.getById(ID);
 
-        assertEquals(actual, product);
+        assertThat(actual).isEqualTo(product);
     }
 
     @Test
     void checkGetByIdShouldCallRepositoryOnce() {
-        Product product = aProduct()
-                .name("name")
-                .price(BigDecimal.valueOf(99.99))
-                .build();
+        Product product = aProduct().name("name").price(BigDecimal.valueOf(99.99)).build();
         when(productRepository.findById(ID)).thenReturn(Optional.of(product));
 
         productService.getById(ID);
@@ -68,75 +61,60 @@ class ProductServiceImplTest {
 
     @Test
     void checkGetByIdShouldThrowEntityNotFoundExceptionWhenProductIsNotPresent() {
-        when(productRepository.findById(ID)).thenReturn(Optional.empty());
+        doReturn(Optional.empty()).when(productRepository).findById(ID);
 
-        assertThrows(EntityNotFoundException.class, () -> productService.getById(ID));
+        assertThatThrownBy(() -> productService.getById(ID))
+                .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
     void checkGetByPagingShouldReturnActualProductsAndCallRepository() {
         List<Product> products = List.of(
-                aProduct()
-                        .name("name1")
-                        .price(BigDecimal.valueOf(99.92))
-                        .build(),
-                aProduct()
-                        .name("name2")
-                        .price(BigDecimal.valueOf(99.93))
-                        .build()
+                aProduct().name("name1").price(BigDecimal.valueOf(99.92)).build(),
+                aProduct().name("name2").price(BigDecimal.valueOf(99.93)).build()
         );
-        when(productRepository.findAll(any(PageRequest.class))).thenReturn(new ArrayList<>(products));
+        doReturn(new ArrayList<>(products)).when(productRepository).findAll(any(PageRequest.class));
 
         List<Product> actual = productService.getByPaging(PageRequest.of(0, 2));
 
-        assertEquals(actual, products);
         verify(productRepository).findAll(any(PageRequest.class));
+        assertThat(actual).isEqualTo(products);
     }
 
     @Test
     void checkCreateShouldReturnCreatedProductAndCallRepository() {
-        Product product = aProduct()
-                .name("name")
-                .price(BigDecimal.valueOf(89.32))
-                .build();
-        when(productRepository.existsByName(product.getName())).thenReturn(false);
-        when(productRepository.save(product)).thenReturn(product);
+        Product product = aProduct().name("name").price(BigDecimal.valueOf(89.32)).build();
+        doReturn(false).when(productRepository).existsByName(product.getName());
+        doReturn(product).when(productRepository).save(product);
 
         Product actual = productService.create(product);
 
-        assertEquals(actual, product);
         verify(productRepository).existsByName(product.getName());
         verify(productRepository).save(productCaptor.capture());
+        assertThat(actual).isEqualTo(product);
     }
 
     @Test
     void checkCreateShouldThrowEntityAlreadyExistsExceptionWhenProductNameIsNotUnique() {
-        Product product = aProduct()
-                .name("name")
-                .price(BigDecimal.valueOf(89.32))
-                .build();
-        when(productRepository.existsByName(product.getName())).thenReturn(true);
+        Product product = aProduct().name("name").price(BigDecimal.valueOf(89.32)).build();
+        doReturn(true).when(productRepository).existsByName(product.getName());
 
-        assertThrows(EntityAlreadyExistsException.class, () -> productService.create(product));
+        assertThatThrownBy(() -> productService.create(product))
+                .isInstanceOf(EntityAlreadyExistsException.class);
     }
 
     @Test
     void checkCreateShouldIncorrectRequestExceptionWhenProductIsNotValid() {
-        Product product = aProduct()
-                .name("")
-                .price(BigDecimal.valueOf(99.999))
-                .build();
+        Product product = aProduct().name("").price(BigDecimal.valueOf(99.999)).build();
 
-        assertThrows(IncorrectRequestException.class, () -> productService.create(product));
+        assertThatThrownBy(() -> productService.create(product))
+                .isInstanceOf(IncorrectRequestException.class);
     }
 
     @Test
     void checkUpdateShouldCallRepositoryAndProductGetters() {
-        Product product = aProduct()
-                .name("name")
-                .price(BigDecimal.valueOf(92.12))
-                .build();
-        when(productRepository.existsById(ID)).thenReturn(true);
+        Product product = aProduct().name("name").price(BigDecimal.valueOf(92.12)).build();
+        doReturn(true).when(productRepository).existsById(ID);
 
         productService.update(ID, product);
 
@@ -146,29 +124,25 @@ class ProductServiceImplTest {
 
     @Test
     void checkUpdateShouldThrowEntityNotFoundExceptionWhenProductIsNotPresent() {
-        Product product = aProduct()
-                .name("name")
-                .price(BigDecimal.valueOf(92.12))
-                .build();
-        when(productRepository.existsById(ID)).thenReturn(false);
+        Product product = aProduct().name("name").price(BigDecimal.valueOf(92.12)).build();
+        doReturn(false).when(productRepository).existsById(ID);
 
-        assertThrows(EntityNotFoundException.class, () -> productService.update(ID, product));
+        assertThatThrownBy(() -> productService.update(ID, product))
+                .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
     void checkUpdateShouldThrowIncorrectRequestExceptionWhenProductIsInvalid() {
-        Product product = aProduct()
-                .name("")
-                .price(BigDecimal.valueOf(99.99))
-                .build();
-        when(productRepository.existsById(ID)).thenReturn(true);
+        Product product = aProduct().name("").price(BigDecimal.valueOf(99.99)).build();
+        doReturn(true).when(productRepository).existsById(ID);
 
-        assertThrows(IncorrectRequestException.class, () -> productService.update(ID, product));
+        assertThatThrownBy(() -> productService.update(ID, product))
+                .isInstanceOf(IncorrectRequestException.class);
     }
 
     @Test
     void checkDeleteByIdShouldCallRepository() {
-        when(productRepository.existsById(ID)).thenReturn(true);
+        doReturn(true).when(productRepository).existsById(ID);
 
         productService.deleteById(ID);
 
@@ -180,7 +154,8 @@ class ProductServiceImplTest {
     void checkDeleteByIdShouldThrowEntityNotFoundException() {
         when(productRepository.existsById(ID)).thenReturn(false);
 
-        assertThrows(EntityNotFoundException.class, () -> productService.deleteById(ID));
+        assertThatThrownBy(() -> productService.deleteById(ID))
+                .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -193,11 +168,11 @@ class ProductServiceImplTest {
                 aProduct().name("name4").price(BigDecimal.valueOf(0.04)).build(),
                 aProduct().name("name1").price(BigDecimal.valueOf(0.05)).build()
         );
-        when(productRepository.findByIdIn(ids)).thenReturn(products);
+        doReturn(products).when(productRepository).findByIdIn(ids);
 
         List<Product> actual = productService.getProductsByIdIn(ids);
 
-        assertEquals(actual, products);
         verify(productRepository).findByIdIn(ids);
+        assertThat(actual).isEqualTo(products);
     }
 }
