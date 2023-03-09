@@ -25,6 +25,7 @@ ext {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.projectlombok:lombok:1.18.24'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -40,7 +41,9 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor "org.projectlombok:lombok"
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
     implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 
