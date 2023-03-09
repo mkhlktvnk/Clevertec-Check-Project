@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CheckItemMapperTest {
     private final CheckItemMapper mapper = CheckItemMapper.INSTANCE;
@@ -17,14 +18,15 @@ class CheckItemMapperTest {
     void toModelShouldConvert(CheckItem checkItem) {
         CheckItemModel model = mapper.toModel(checkItem);
         assertAll(
-                () -> assertEquals(model.getId(), checkItem.getId()),
+                () -> assertThat(model.getId())
+                        .isEqualTo(checkItem.getId()),
                 () -> assertAll(
-                        () -> assertEquals(model.getProduct().getId(), checkItem.getProduct().getId()),
-                        () -> assertEquals(model.getProduct().getName(), checkItem.getProduct().getName()),
-                        () -> assertEquals(model.getProduct().getPrice(), checkItem.getProduct().getPrice())
+                        () -> assertThat(model.getProduct().getId()).isEqualTo(checkItem.getProduct().getId()),
+                        () -> assertThat(model.getProduct().getName()).isEqualTo(checkItem.getProduct().getName()),
+                        () -> assertThat(model.getProduct().getPrice()).isEqualTo(checkItem.getProduct().getPrice())
                 ),
-                () -> assertEquals(model.getQuantity(), checkItem.getQuantity()),
-                () -> assertEquals(model.getTotalPrice(), checkItem.getTotalPrice())
+                () -> assertThat(model.getQuantity()).isEqualTo(checkItem.getQuantity()),
+                () -> assertThat(model.getTotalPrice()).isEqualTo(checkItem.getTotalPrice())
         );
     }
 
