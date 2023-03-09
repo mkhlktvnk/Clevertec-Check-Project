@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DiscountCardMapperTest {
     private final DiscountCardMapper mapper = DiscountCardMapper.INSTANCE;
@@ -17,8 +18,8 @@ class DiscountCardMapperTest {
     void toModel(DiscountCard discountCard) {
         DiscountCardModel model = mapper.toModel(discountCard);
         assertAll(
-                () -> assertEquals(model.getId(), discountCard.getId()),
-                () -> assertEquals(model.getDiscount(), discountCard.getDiscount())
+                () -> assertThat(model.getId()).isEqualTo(discountCard.getId()),
+                () -> assertThat(model.getDiscount()).isEqualTo(discountCard.getDiscount())
         );
     }
 }
