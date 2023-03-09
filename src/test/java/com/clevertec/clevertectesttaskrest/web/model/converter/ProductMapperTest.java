@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductMapperTest {
     private final ProductMapper mapper = ProductMapper.INSTANCE;
@@ -16,9 +17,9 @@ class ProductMapperTest {
     void toModelShouldConvert(Product product) {
         ProductModel model = mapper.toModel(product);
         assertAll(
-                () -> assertEquals(model.getId(), product.getId()),
-                () -> assertEquals(model.getName(), product.getName()),
-                () -> assertEquals(model.getPrice(), product.getPrice())
+                () -> assertThat(model.getId()).isEqualTo(product.getId()),
+                () -> assertThat(model.getName()).isEqualTo(product.getName()),
+                () -> assertThat(model.getPrice()).isEqualTo(product.getPrice())
         );
     }
 }
