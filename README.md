@@ -202,5 +202,15 @@
             add constraint fk_product_id
             foreign key (product_id)
             references product;
+## 5. Caching
+#### In this project, caching is implemented using a custom in-memory cache using LRU and LFU algorithms.
+#### Caches are represented by two classes: LFUCache and LRUCache.
+#### Both classes implement the Cache<K, V> interface, where K is a typed parameter for the cache entry key, and V is the value of the cache entry.
+#### Each cache has three methods:
+*        boolean put(K key, V value)
+*        Optional<V> get(K key)
+*        boolean remove(K key)
+#### More information about cache methods can be found in the javadoc of the Cache<K, V> interface.
+#### [Cache replacement policies - Wikipedia](https://en.wikipedia.org/wiki/Cache_replacement_policies)
 
 
